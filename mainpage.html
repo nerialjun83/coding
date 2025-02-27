@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin and Guest Buttons</title>
+   <link rel = "stylesheet" href="mainpage.css">
+   
+</head>
+<body>
+    
+    <button class="admin" onclick="handleClick('Admin')">Admin</button>
+    <button class="guest" onclick="handleClick('Guest')">Guest</button>
+
+    <script>
+        function handleClick(role) {
+            if (role === 'Admin') {
+                window.location.href = 'admin.html'; // Redirect to admin page
+            } else {
+                alert(`You clicked the Guest button.`);
+            }
+        }
+    </script>
+
+</body>
+</html>

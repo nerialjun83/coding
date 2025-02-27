@@ -1,0 +1,39 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url(images/bgmpage.jpg);
+    font-family: Arial, sans-serif;
+    color: white;
+}
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.admin {
+    color: black;
+    box-shadow: 0 5px 5px; /* Subtle shadow for depth */
+    background-color: skyblue;
+    background: background-transition 0.3s;
+}
+.admin:hover{
+    
+    background-color: blue;
+    
+}
+.guest { 
+    color: black;
+    box-shadow: 0 5px 5px; /* Subtle shadow for depth */
+    background-color: lightgreen;
+    background: background-transition 0.3s;
+}
+.guest:hover{
+    background-color: green;
+    
+    
+}

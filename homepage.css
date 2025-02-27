@@ -1,0 +1,240 @@
+body {
+    background-image: url(images/bgmpage.jpg);
+    /* Light gray background */
+    color: #333;
+    display: flex;
+    flex-direction: column; /* Vertical layout */
+    margin: 0;
+    height: 100vh;
+    font-family: 'Arial', sans-serif; /* Font style */
+}
+.folder-icon {
+    width: 20px; /* Adjust the size as needed */
+    margin-right: 8px; /* Space between icon and folder name */
+}
+.header {
+    background-color: transparent; /* Header background */
+    color: white; /* Header text color */
+    padding: 1px; /* Padding for header */
+    text-align: center; /* Center text in header */
+    font-size: 20px; /* Header font size */
+}
+.top-container {
+    display: flex; /* Horizontal layout */
+    align-items: center; /* Center vertically */
+    margin: 20px; /* Space around the top container */
+}
+.search-container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    margin-left: auto; /* Align search to the right */
+    
+}
+.search-container input {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top : 10px;
+    transition: border-color 0.3s; /* Smooth border transition */
+}
+.search-container input:focus {
+    border-color: #0056b3; /* Change border color on focus */
+    outline: none; /* Remove outline */
+}
+.icon-button {
+    padding: 10px;
+    border: none;
+    background-color: transparent; /* No background for icons */
+    color: #333; /* Icon color */
+    font-size: 20px; /* Icon size */
+    cursor: pointer;
+    transition: color 0.3s; /* Smooth color transition */
+}
+.icon-button:hover {
+    color: #007bff; /* Change color on hover */
+}
+.new-button {
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    background-color: skyblue; /* Button color */
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px; /* Space between buttons */
+    transition: backgroupnd-color 0.3s; /* Smooth background transition */
+    margin-bottom:10px;
+    box-shadow: 0 5px 5px;
+    font-size:16px;
+    padding:8px;
+    width:auto;
+
+}
+.new-button:hover {
+    background-color: #0056b3; /* Darker blue */
+    color: white;
+}
+
+.file-explorer {
+    margin: 20px; /* Space around the file explorer */
+    border: 1px solid black; /* Border around the explorer */
+    border-radius: 5px;
+    padding: 10px;
+    background-color: white; /* White background for explorer */
+    overflow-y: auto; /* Scrollable if content overflows */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Remove cell spacing */
+     /* Space between tables */
+}
+th, td {
+    padding: 12px; /* Increased padding */
+    text-align: left; /* Left align text */
+    border-bottom: 1px solid #eee; /* Separator between rows */
+}
+th {
+    background-color: #f9f9f9; /* Header background */
+    font-weight: bold; /* Bold text for headers */
+}
+
+tr:hover {
+    background-color: #f0f0f0; /* Highlight on row hover */
+    
+
+}
+.folder-icon {
+    margin-right: 8px; /* Space between icon and folder name */
+    color: #f39c12; /* Icon color */
+}
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px; /* Location of content */
+}
+.modal-content {
+    
+    background-color: #f0f8ff; /* Alice blue */
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px; /* Maximum width for the modal */
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+#filePreviewImage {
+    max-width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+}
+.icon-button{
+    text-align: left;
+    
+}
+.back-button {
+    box-shadow: 0 5px 5px; /* Subtle shadow for depth */
+    position: absolute; /* Position it in the top-left corner */
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: skyblue;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width:auto;
+}
+.back-button:hover {
+    background-color:  #0056b3;
+}
+.box {
+    margin: 20px;
+    width: 1300px;
+    height:600px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.folder {
+    color: #f39c12; /* Orange */
+    font-weight: bold; /* Bold for folders and files */
+    cursor: pointer; /* Indicate that it is clickable */
+}
+
+.file {
+    color: #3498db; /* Blue */
+    font-weight: bold; /* Bold for folders and files */
+    cursor: pointer; /* Indicate that it is clickable */
+
+}
+@media (max-width: 768px) {
+    .top-container {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start; /* Align items to the left */
+    }
+}
+@media (max-width: 480px) {
+    .header {
+        font-size: 18px; /* Smaller header for very small screens */
+    }
+}
+.new-button, .back-button {
+    font-size: 16px; /* Adjust button size */
+    padding: 8px; /* Reduced padding */
+}
+.modal-error {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    padding-top: 60px; /* Location of content */
+}
+.modal-content-error {
+    background-color: #fefefe;
+    margin: 15% auto; /* Centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px; /* Maximum width for the modal */
+}
+.close-error {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close-error:hover,
+.close-error:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

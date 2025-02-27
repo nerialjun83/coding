@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functional File Explorer</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+<body>
+    <div class="header" role="banner" aria-label="File Manager System">
+        FILE MANAGER SYSTEM
+    </div>
+    
+    <button class="back-button" onclick="gooBack()" aria-label="Go back to admin page">Back</button>
+
+    <script>
+        function gooBack() {
+            window.location.href = 'admin.html';
+        }
+    </script>
+    <br><br><br>
+
+    <div class="box">
+        <div class="top-container">
+            <button class="new-button" onclick="openModal()"><b>NEW</b></button>
+            <input type="file" id="fileInput" style="display: none;" multiple />
+            <button class="new-button" onclick="document.getElementById('fileInput').click()"><b>UPLOAD</b></button>
+            <div class="search-container">
+                <input type="text" id="searchBar" placeholder="Search..." oninput="filterFiles()">
+            </div>
+        </div>
+        <button class="icon-button" onclick="goBack()" style="float: left;"><img src="images/back.png"></button>
+
+        <div class="file-explorer">
+            <table id="fileTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date Modified</th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="fileBody">
+                    <!-- Dynamic content will be added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>  
+
+    <!-- Modal for New Folder -->
+    <div id="newFolderModal" class="modal" role="dialog" aria-labelledby="newFolderTitle" aria-modal="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <h2 id="newFolderTitle">NEW FOLDER</h2>
+            <input type="text" id="folderName" placeholder="Folder Name" aria-required="true">
+            <br><br>
+            <button aria-label="Add new folder" onclick="addNewFolder()">Add</button>
+        </div>
+    </div>
+
+    <!-- Modal for File Preview -->
+    <div id="filePreviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="previewFileName"></h2>
+            <p id="previewFileType"></p>
+            <p id="previewFileSize"></p>
+            <img id="filePreviewImage" src="" alt="File Preview" style="display: none;">
+            <p id="previewFileMessage"></p>
+        </div>
+    </div>
+   
+    <script>
+        let currentFolder = '';
+        let folderHistory = [];
+        let folders = {};
+
+        function openModal() {
+            document.getElementById("newFolderModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("newFolderModal").style.display = "none";
+            const folderNameInput = document.getElementById('folderName');
+            folderNameInput.value = '';
+        }
+
+        function addNewFolder() {
+            const folderName = document.getElementById('folderName').value;
+
+            if (folderName) {
+                if (!folders[currentFolder]) {
+                    folders[currentFolder] = [];
+                }
+                folders[currentFolder].push(folderName);
+                renderFiles();
+                closeModal();
+            } else {
+                alert("Please enter a folder name.");
+            }
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+    const files = event.target.files;
+    for (let file of files) {
+        if (file.size > 5 * 1024 * 1024) { // Limit to 5MB
+            alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+            continue;
+        }
+        if (!file.type.startsWith('image/') && !file.type.startsWith('application/')) {
+            alert(`File ${file.name} is unsupported. Please upload an image or document.`);
+            continue;
+        }
+        if (!folders[currentFolder]) {
+            folders[currentFolder] = [];
+        }
+        folders[currentFolder].push({ name: file.name, type: file.type, size: file.size });
+        renderFiles();
+    }
+});
+
+        function renderFiles() {
+    const tableBody = document.getElementById("fileBody");
+    tableBody.innerHTML = '';
+
+    const currentFiles = folders[currentFolder] || [];
+    currentFiles.forEach(item => {
+        const newRow = tableBody.insertRow();
+        if (typeof item === 'string') {
+            newRow.innerHTML = `
+                <td class="folder" onclick="navigateToFolder('${item}')"><i class="fas fa-folder"></i> ${item}</td>
+                <td>${new Date().toLocaleString()}</td>
+                <td>File Folder</td>
+                <td></td>
+                <td>
+                    <button onclick="renameItem(this, 'folder')"><img src="images/edit.png"></button>
+                    <button onclick="deleteRow(this)"><img src="images/delete.png"></button>
+                </td>
+            `;
+        } else {
+            newRow.innerHTML = `
+                <td class="file" onclick="viewFile('${item.name}', '${item.type}', ${item.size})">${item.name}</td>
+                <td>${new Date().toLocaleString()}</td>
+                <td>${item.type}</td>
+                <td>${(item.size / 1024).toFixed(2)} KB</td>
+                <td>
+                    <button onclick="renameItem(this, 'file')"><img src="images/edit.png"></button>
+                    <button onclick="deleteRow(this)"><img src="images/delete.png"></button>
+                </td>
+            `;
+        }
+    });
+}
+
+        function viewFile(name, type, size) {
+            const previewFileName = document.getElementById('previewFileName');
+            const previewFileType = document.getElementById('previewFileType');
+            const previewFileSize = document.getElementById('previewFileSize');
+            const filePreviewImage = document.getElementById('filePreviewImage');
+            const previewFileMessage = document.getElementById('previewFileMessage');
+
+            previewFileName.textContent = name;
+            previewFileType.textContent = `Type: ${type}`;
+            previewFileSize.textContent = `Size: ${(size / 1024).toFixed(2)} KB`;
+            filePreviewImage.style.display = 'none';
+            previewFileMessage.textContent = '';
+
+            if (type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    filePreviewImage.src = e.target.result;
+                    filePreviewImage.style.display = 'block';
+                };
+                reader.readAsDataURL(new Blob([new Uint8Array(size)]));
+            } else {
+                previewFileMessage.textContent = 'Preview not available for this file type.';
+            }
+
+            document.getElementById('filePreviewModal').style.display = "block";
+        }
+
+        function filterFiles() {
+            const searchValue = document.getElementById("searchBar").value.toLowerCase();
+            const rows = document.querySelectorAll("#fileBody tr");
+
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                row.style.display = name.includes(searchValue) ? "" : "none";
+            });
+        }
+
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            const name = row.cells[0].textContent.trim();
+            if (row.cells[0].classList.contains('folder')) {
+                folders[currentFolder] = folders[currentFolder].filter(folder => folder !== name);
+            } else {
+                folders[currentFolder] = folders[currentFolder].filter(file => file.name !== name);
+            }
+            renderFiles();
+        }
+
+        function renameItem(button, type) {
+            const row = button.parentElement.parentElement;
+            const nameCell = row.cells[0];
+            const currentName = nameCell.textContent.trim();
+
+            const newName = prompt(`Rename ${type === 'folder' ? 'folder' : 'file'} from "${currentName}" to:`, currentName);
+            if (newName) {
+                if (type === 'folder') {
+                    const index = folders[currentFolder].indexOf(currentName);
+                    if (index !== -1) {
+                        folders[currentFolder][index] = newName;
+                    }
+                } else {
+                    const file = folders[currentFolder].find(file => file.name === currentName);
+                    if (file) {
+                        file.name = newName;
+                    }
+                }
+                renderFiles();
+            }
+        }
+
+        function navigateToFolder(folderName) {
+            folderHistory.push(currentFolder);
+            currentFolder = folderName;
+            renderFiles();
+        }
+
+        function goBack() {
+            if (folderHistory.length > 0) {
+                currentFolder = folderHistory.pop();
+                renderFiles();
+            } else {
+                alert("You are already at the root folder.");
+            }
+        }
+
+        function showNotifications() {
+            alert("You have no new notifications.");
+        }
+        
+      
+    
+    
+    </script>
+</body>
+</html>
